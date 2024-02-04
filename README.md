@@ -12,6 +12,8 @@
   - Logback
 - Documentation
   - Swagger
+- Cache
+  - Redis
 - Docker
   - Dockerfile
-  - docker-compose
+- AOP
