@@ -6,9 +6,9 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/example-${spring.profiles.active}.log</file>
+        <file>logs/executor-${spring.profiles.active}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/example-${spring.profiles.active}-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/executor-${spring.profiles.active}-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 
@@ -17,7 +17,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.boilerplate" level="DEBUG" additivity="true">
+    <logger name="com.dailyalgo.codeExecutor" level="DEBUG" additivity="true">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </logger>

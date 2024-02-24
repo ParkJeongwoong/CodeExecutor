@@ -14,6 +14,5 @@ COPY ./src/main/resources/application-dev.properties /application-dev.properties
 # 실행 명령
 
 ENTRYPOINT ["nohup", "java","-jar",\
-"-Dspring.config.location=/application.properties,/application-db.properties,/application-${IDLE_PROFILE}.properties",\
-"-Dspring.profiles.active=${IDLE_PROFILE}",\
+"-Dspring.config.location=/application.properties",\
 "spring.jar", "2>&1", "&"]
