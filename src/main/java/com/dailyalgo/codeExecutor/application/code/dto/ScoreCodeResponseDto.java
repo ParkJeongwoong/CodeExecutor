@@ -6,11 +6,13 @@ import lombok.Getter;
 @Getter
 public class ScoreCodeResponseDto {
 
+	private final String id;
 	private boolean isCorrect;
 	private String message;
 	private final List<Boolean> resultList;
 
-	public ScoreCodeResponseDto(List<Boolean> resultList) {
+	public ScoreCodeResponseDto(String id, List<Boolean> resultList) {
+		this.id = id;
 		this.resultList = resultList;
 	}
 

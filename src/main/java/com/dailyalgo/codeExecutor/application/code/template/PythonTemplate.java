@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PythonTemplate extends CodeTemplate {
 
-	public PythonTemplate(String code, List inputType, String outputType) {
+	public PythonTemplate(String code, List<String> inputType, String outputType) {
 		super(code, inputType, outputType);
 	}
 
@@ -21,13 +21,13 @@ public class PythonTemplate extends CodeTemplate {
 	}
 
 	@Override
-	public String getFileType() {
-		return ".py";
+	public String getFileName() {
+		return "Run.py";
 	}
 
 	@Override
 	public ProcessBuilder getProcessBuilder() {
-		return new ProcessBuilder("python", "run.py");
+		return new ProcessBuilder("python", "Run.py");
 	}
 
 }

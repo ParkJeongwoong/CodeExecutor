@@ -6,14 +6,16 @@ import lombok.Getter;
 @Getter
 public class ScoreCodeRequestDto {
 
+	private final String id;
 	private final String code;
 	private final String language;
-	private final List<List> input;
-	private final List output;
-	private final List inputType;
+	private final List<List<String>> input;
+	private final List<String> output;
+	private final List<String> inputType;
 	private final String outputType;
 
-	public ScoreCodeRequestDto(String code, String language, List<List> input, List output, List inputType, String outputType) {
+	public ScoreCodeRequestDto(String id, String code, String language, List<List<String>> input, List<String> output, List<String> inputType, String outputType) {
+		this.id = id;
 		this.code = code;
 		this.language = language;
 		this.input = input;

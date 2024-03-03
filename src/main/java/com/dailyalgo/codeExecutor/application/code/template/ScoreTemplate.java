@@ -5,12 +5,13 @@ import java.util.List;
 
 public interface ScoreTemplate {
 
-	List<List> input = new ArrayList();
-	List output = new ArrayList();
+	List<List<String>> input = new ArrayList<>();
+	List<String> output = new ArrayList<>();
 
+	String getCode();
 	String getTemplate();
-	String getFileType();
-	void compile();
+	String getFileName();
+	void compile(String path);
 	ProcessBuilder getProcessBuilder();
 
 }

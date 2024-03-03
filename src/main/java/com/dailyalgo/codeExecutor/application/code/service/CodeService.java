@@ -22,26 +22,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class CodeService {
 
-	public RunCodeResponseDto runCode(String code, String language, String outputType) {
+	public RunCodeResponseDto runCode(String id, String code, String language, String outputType) {
 		CodeTemplate codeTemplate = getCodeTemplate(code, language, outputType);
 		if (codeTemplate == null) {
 			return new RunCodeResponseDto("Template not found");
 		}
-		saveFile("./code/run"+codeTemplate.getFileType(), codeTemplate.getTemplate());
-		codeTemplate.compile(); // java only
-		String result = executeCode(codeTemplate.getProcessBuilder());
+		String path = "./code/"+id;
+		saveCode(path, codeTemplate, language);
+		codeTemplate.compile(path); // java only
+		String result = executeCode(path, codeTemplate.getProcessBuilder());
 		return new RunCodeResponseDto(result);
 	}
 
-	public ScoreCodeResponseDto scoreCode(String code, String language, List inputType, String outputType, List input, List output) {
+	public ScoreCodeResponseDto scoreCode(String id, String code, String language, List<String> inputType, String outputType, List<List<String>> input, List<String> output) {
 		ScoreTemplate scoreTemplate = getScoreTemplate(code, language, inputType, outputType, input, output);
 		if (scoreTemplate == null) {
-			return new ScoreCodeResponseDto(null).setResult(false, "Template not found");
+			return new ScoreCodeResponseDto(id, null).setResult(false, "Template not found");
 		}
-		saveFile("./code/score"+scoreTemplate.getFileType(), scoreTemplate.getTemplate());
-		scoreTemplate.compile(); // java only
-		List result = score(scoreTemplate.getProcessBuilder(), output);
-		return new ScoreCodeResponseDto(result).setResult(true, "Success");
+		String path = "./code/"+id;
+		saveCode(path, scoreTemplate, language);
+		scoreTemplate.compile(path); // java only
+		List<Boolean> result = score(path, scoreTemplate.getProcessBuilder(), output);
+		return new ScoreCodeResponseDto(id, result).setResult(true, "Success");
 	}
 
 	private CodeTemplate getCodeTemplate(String code, String language, String outputType) {
@@ -55,7 +57,7 @@ public class CodeService {
 		return codeTemplate;
 	}
 
-	private ScoreTemplate getScoreTemplate(String code, String language, List inputType, String outputType, List input, List output) {
+	private ScoreTemplate getScoreTemplate(String code, String language, List<String> inputType, String outputType, List<List<String>> input, List<String> output) {
 		ScoreTemplate codeTemplate = null;
 		if (language.equals("python")) {
 			codeTemplate = new PythonScoreTemplate(code, inputType, outputType, input, output);
@@ -63,9 +65,25 @@ public class CodeService {
 		return codeTemplate;
 	}
 
-	private void saveFile(String path, String code) {
-		File file = new File(path);
+	private void saveCode(String path, CodeTemplate codeTemplate, String language) {
+		saveFile(path, codeTemplate.getFileName(), codeTemplate.getTemplate());
+		if (language.equals("java")) {
+			saveFile(path, "Solution.java", codeTemplate.getCode());
+		}
+	}
+	private void saveCode(String path, ScoreTemplate codeTemplate, String language) {
+		saveFile(path, codeTemplate.getFileName(), codeTemplate.getTemplate());
+		if (language.equals("java")) {
+			saveFile(path, "Solution.java", codeTemplate.getCode());
+		}
+	}
+
+	private void saveFile(String path, String fileName, String content) {
+		File file = new File(path+"/"+fileName);
 		try {
+			if (!createDirectory(path)) {
+				throw new IOException("Error occurred while creating directory");
+			}
 			if (file.exists()) {
 				if (!file.delete()) {
 					throw new IOException("Error occurred while deleting file");
@@ -75,7 +93,7 @@ public class CodeService {
 				log.info("File created: {}", file.getName());
 
 				BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-				writer.write(code);
+				writer.write(content);
 				writer.newLine();
 				writer.flush();
 				writer.close();
@@ -85,11 +103,11 @@ public class CodeService {
 		}
 	}
 
-	private String executeCode(ProcessBuilder processBuilder) {
+	private String executeCode(String path, ProcessBuilder processBuilder) {
 		String result = "";
 		try {
 			log.info("Executing code");
-			processBuilder.directory(new File("./code"));
+			processBuilder.directory(new File(path));
 			Process process = processBuilder.start();
 
 			StringBuilder output = new StringBuilder();
@@ -110,11 +128,25 @@ public class CodeService {
 		return result;
 	}
 
-	private List<Boolean> score(ProcessBuilder processBuilder, List outputList) {
+	private boolean createDirectory(String path) {
+		File file = new File(path);
+		if (!file.exists()) {
+			if (file.mkdirs()) {
+				log.info("Directory created: {}", file.getName());
+				return true;
+			} else {
+				log.error("Error occurred while creating directory");
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private List<Boolean> score(String path, ProcessBuilder processBuilder, List<String> outputList) {
 		List<String> result = new ArrayList<>();
 		try {
 			log.info("Score code");
-			processBuilder.directory(new File("./code"));
+			processBuilder.directory(new File(path));
 			Process process = processBuilder.start();
 
 			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));

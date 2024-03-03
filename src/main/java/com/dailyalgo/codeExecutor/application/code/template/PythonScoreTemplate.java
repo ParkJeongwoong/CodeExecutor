@@ -4,10 +4,10 @@ import java.util.List;
 
 public class PythonScoreTemplate extends PythonTemplate implements ScoreTemplate {
 
-	public PythonScoreTemplate(String code, List inputType, String outputType, List<List> input, List output) {
+	public PythonScoreTemplate(String code, List<String> inputType, String outputType, List<List<String>> input, List<String> output) {
 		super(code, inputType, outputType);
-		input.forEach(this.input::add);
-		output.forEach(this.output::add);
+		this.input.addAll(input);
+		this.output.addAll(output);
 	}
 
 	@Override
@@ -18,15 +18,16 @@ public class PythonScoreTemplate extends PythonTemplate implements ScoreTemplate
 			.append(code).append(System.lineSeparator())
 			.append("if __name__ == \"__main__\":").append(System.lineSeparator())
 			.append("    inputList = []").append(System.lineSeparator());
-		for (int i = 0; i < input.size(); i++) {
+		for (List<String> strings : input) {
 			stringBuilder.append("    inputList.append([");
-			for (int j = 0; j < input.get(i).size(); j++) {
+			for (int j = 0; j < strings.size(); j++) {
 				if (inputType.get(j).equals("str")) {
-					stringBuilder.append("\"").append(input.get(i).get(j)).append("\"");
+					stringBuilder.append("\"").append(strings.get(j)).append("\"");
 				} else {
-					stringBuilder.append(inputType.get(j)).append("(").append(input.get(i).get(j)).append(")");
+					stringBuilder.append(inputType.get(j)).append("(").append(strings.get(j))
+						.append(")");
 				}
-				if (j != input.get(i).size() - 1) {
+				if (j != strings.size() - 1) {
 					stringBuilder.append(", ");
 				}
 			}
@@ -47,7 +48,7 @@ public class PythonScoreTemplate extends PythonTemplate implements ScoreTemplate
 
 	@Override
 	public ProcessBuilder getProcessBuilder() {
-		return new ProcessBuilder("python", "score.py");
+		return new ProcessBuilder("python", "Score.py");
 	}
 
 }

@@ -26,24 +26,26 @@ public class CodeController {
 
 	@PostMapping("/run")
 	public ResponseEntity<RunCodeResponseDto> runCode(@RequestBody RunCodeRequestDto requestDto) {
+		String id = requestDto.getId();
 		String code = requestDto.getCode();
 		String language = requestDto.getLanguage();
 		String outputType = requestDto.getOutputType();
 
-		RunCodeResponseDto responseDto = codeService.runCode(code, language, outputType);
+		RunCodeResponseDto responseDto = codeService.runCode(id, code, language, outputType);
 		return ResponseEntity.ok(responseDto);
 	}
 
 	@PostMapping("/score")
 	public ResponseEntity<ScoreCodeResponseDto> scoreCode(@RequestBody ScoreCodeRequestDto requestDto) {
+		String id = requestDto.getId();
 		String code = requestDto.getCode();
 		String language = requestDto.getLanguage();
 		String outputType = requestDto.getOutputType();
-		List inputType = requestDto.getInputType();
-		List<List> input = requestDto.getInput();
-		List output = requestDto.getOutput();
+		List<String> inputType = requestDto.getInputType();
+		List<List<String>> input = requestDto.getInput();
+		List<String> output = requestDto.getOutput();
 
-		ScoreCodeResponseDto responseDto = codeService.scoreCode(code, language, inputType, outputType, input, output);
+		ScoreCodeResponseDto responseDto = codeService.scoreCode(id, code, language, inputType, outputType, input, output);
 		return ResponseEntity.ok(responseDto);
 	}
 

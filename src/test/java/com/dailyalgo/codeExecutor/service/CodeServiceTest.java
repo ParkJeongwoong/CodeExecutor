@@ -19,7 +19,7 @@ public class CodeServiceTest {
 	public void python_run_test() {
 		String code = "def solution():\n    return 94";
 		String language = "python";
-		RunCodeResponseDto response = codeService.runCode(code, language, "");
+		RunCodeResponseDto response = codeService.runCode("python_test", code, language, "");
 		System.out.println("Result : " + response.getResult()); // "Result : 94\n
 	}
 
@@ -31,16 +31,16 @@ public class CodeServiceTest {
 		inputType.add("int");
 		inputType.add("int");
 		String outputType = "int";
-		List<List> input = new ArrayList<>();
-		input.add(List.of(5, 10));
-		input.add(List.of(10, 20));
-		input.add(List.of(15, 30));
-		List<Integer> output = new ArrayList<>();
-		output.add(15);
-		output.add(30);
-		output.add(55);
+		List<List<String>> input = new ArrayList<>();
+		input.add(List.of("5", "10"));
+		input.add(List.of("10", "20"));
+		input.add(List.of("15", "30"));
+		List<String> output = new ArrayList<>();
+		output.add("15");
+		output.add("30");
+		output.add("55");
 
-		ScoreCodeResponseDto response = codeService.scoreCode(code, language, inputType, outputType, input, output);
+		ScoreCodeResponseDto response = codeService.scoreCode("test1", code, language, inputType, outputType, input, output);
 		System.out.println("Score : " + response.getResultList().toString()); // "Score : 100\n
 	}
 
@@ -52,7 +52,7 @@ public class CodeServiceTest {
 		inputType.add("str");
 		inputType.add("str");
 		String outputType = "str";
-		List<List> input = new ArrayList<>();
+		List<List<String>> input = new ArrayList<>();
 		input.add(List.of("5", "10"));
 		input.add(List.of("10", "20"));
 		input.add(List.of("15", "30"));
@@ -61,7 +61,7 @@ public class CodeServiceTest {
 		output.add("1020");
 		output.add("153");
 
-		ScoreCodeResponseDto response = codeService.scoreCode(code, language, inputType, outputType, input, output);
+		ScoreCodeResponseDto response = codeService.scoreCode("test2", code, language, inputType, outputType, input, output);
 		System.out.println("Score : " + response.getResultList().toString()); // "Score : [true, true, false]
 	}
 
@@ -74,14 +74,14 @@ public class CodeServiceTest {
 		inputType.add("str");
 		inputType.add("str");
 		String outputType = "str";
-		List<List> input = new ArrayList<>();
+		List<List<String>> input = new ArrayList<>();
 		input.add(List.of("hello", " ", "world"));
 		input.add(List.of("hi", " ", "there"));
-		List output = new ArrayList<>();
+		List<String> output = new ArrayList<>();
 		output.add("hello world");
 		output.add("hi there?");
 
-		ScoreCodeResponseDto response = codeService.scoreCode(code, language, inputType, outputType, input, output);
+		ScoreCodeResponseDto response = codeService.scoreCode("test3", code, language, inputType, outputType, input, output);
 		System.out.println("Result : " + response.getResultList().toString()); // "Result : [true, false]
 	}
 
