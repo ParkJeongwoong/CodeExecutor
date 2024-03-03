@@ -18,6 +18,7 @@ public class JavaTemplate extends CodeTemplate {
 			.replaceAll("System.out.print\\(.*\\)", "");
 
 		return stringBuilder
+			.append("import java.util.*;").append(System.lineSeparator())
 			.append("public class Run {").append(System.lineSeparator())
 			.append("    public static void main(String[] args) {").append(System.lineSeparator())
 			.append("        Solution solution = new Solution();").append(System.lineSeparator())

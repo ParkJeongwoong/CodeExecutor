@@ -55,6 +55,9 @@ public class CodeControllerTest {
 	@Test
 	public void java_list_run_test() {
 		String code = """
+			import java.util.ArrayList;
+			import java.util.List;
+			
 			class Solution {
 				List solution() {
 					List<Integer> list = new ArrayList<>();
