@@ -35,6 +35,7 @@ public class JavaTemplate extends CodeTemplate {
 
 	@Override
 	public ProcessBuilder getProcessBuilder() {
+//		return new ProcessBuilder("javac", "Run.java", "&&", "java", "Run");
 		return new ProcessBuilder("java", "Run");
 	}
 
