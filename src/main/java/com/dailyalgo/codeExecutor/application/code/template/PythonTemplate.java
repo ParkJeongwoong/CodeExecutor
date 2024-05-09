@@ -27,7 +27,7 @@ public class PythonTemplate extends CodeTemplate {
 
 	@Override
 	public ProcessBuilder getProcessBuilder() {
-		return new ProcessBuilder("python", "Run.py");
+		return new ProcessBuilder("python3", "Run.py");
 	}
 
 }

@@ -48,7 +48,7 @@ public class PythonScoreTemplate extends PythonTemplate implements ScoreTemplate
 
 	@Override
 	public ProcessBuilder getProcessBuilder() {
-		return new ProcessBuilder("python", "Score.py");
+		return new ProcessBuilder("python3", "Score.py");
 	}
 
 }
