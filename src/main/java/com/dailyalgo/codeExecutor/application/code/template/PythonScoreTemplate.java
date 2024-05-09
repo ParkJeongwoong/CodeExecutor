@@ -1,8 +1,12 @@
 package com.dailyalgo.codeExecutor.application.code.template;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PythonScoreTemplate extends PythonTemplate implements ScoreTemplate {
+
+	private final List<List<String>> input = new ArrayList<>();
+	private final List<String> output = new ArrayList<>();
 
 	public PythonScoreTemplate(String code, List<String> inputType, String outputType, List<List<String>> input, List<String> output) {
 		super(code, inputType, outputType);
@@ -44,6 +48,11 @@ public class PythonScoreTemplate extends PythonTemplate implements ScoreTemplate
 		}
 		stringBuilder.append("))").append(System.lineSeparator());
 		return stringBuilder.toString();
+	}
+
+	@Override
+	public String getFileName() {
+		return "Score.py";
 	}
 
 	@Override
